@@ -37,6 +37,19 @@ class AppServiceProvider extends ServiceProvider
                     // Register the service provider
                     $this->app->register($namespace);
                 }
+
+                // Load views if the views folder exists in the addon
+                $viewsPath = $addon . '/resoviews';
+                if (File::isDirectory($viewsPath)) {
+                    $viewNamespace = basename($addon);
+                    $this->loadViewsFrom($viewsPath, $viewNamespace);
+                }
+
+                // Load migrations if the migrations folder exists in the addon
+                $migrationsPath = $addon . '/database/migrations';
+                if (File::isDirectory($migrationsPath)) {
+                    $this->loadMigrationsFrom($migrationsPath);
+                }
             }
         }
     }
